@@ -55,28 +55,17 @@ void MergeSort::SortList() {
 
 vector<int> MergeSort::RecursiveSort(vector<int> x) {
     if (x.size() == 1) { // if size of input vector is 1, return vector as is
-        cout << "size 1 of x reached" << endl;
         return x;
     }
     else {
-        cout << "current size is " << x.size()  << endl;
+
         int midpoint = (x.size()) / 2;
         // split vectors
-        vector<int> xLeftInit(x.begin(), x.begin() + midpoint); cout << "  hello. x_l size is " << xLeftInit.size() << endl;
-        cout << "    Current x_l: " << endl;
-        for (int x = 0; x < xLeftInit.size(); x++) {
-            cout << xLeftInit[x] << endl;
-        }
+        vector<int> xLeftInit(x.begin(), x.begin() + midpoint); 
         vector<int> xL = RecursiveSort(xLeftInit); // Should eventually reach the point where x_l2 has size = 1, ending recursion
 
+        vector<int> xRightInit(x.begin() + midpoint, x.end()); 
 
-
-
-        vector<int> xRightInit(x.begin() + midpoint, x.end()); cout << "  hi. x_r size is " << xRightInit.size() << endl;
-        cout << "    Current x_r: " << endl;
-        for (int x = 0; x < xRightInit.size(); x++) {
-            cout << xRightInit[x] << endl;
-        }
         vector<int> xR = RecursiveSort(xRightInit);
 
         // Create result vector
@@ -97,21 +86,11 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
             a2 = xL;
         }
 
-        // Imagine 3,4,9 and 5,8
-        cout << "a1:" << endl;
-        for (i = 0; i < xL.size(); i++) {
-            cout << a1[i] << endl;
-        }
-        cout << "a2:" << endl;
-        for (i = 0; i < a2.size(); i++) {
-            cout << a2[i] << endl;
-        }
-        cout << "BEGIN WHILE LOOP" << endl;
         while (a1.size() > 0 && a2.size() > 0)
         {
             bool l = true;
             // find lowest value out of all vectors
-            int lowestL = a1[0]; cout << "starting lowest for a1 is " << a1[0] << endl;
+            int lowestL = a1[0];
             int lowestLIdx = 0;
             for (int x = 1; x < a1.size(); x++) {
                 if (a1[x] < lowestL) {
@@ -120,7 +99,7 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
                 }
             }
 
-            int lowestR = a2[0]; cout << "starting lowest for a2 is " << a2[0] << endl;
+            int lowestR = a2[0]; 
             int lowestRIdx = 0;
             for (int x = 1; x < a2.size(); x++) {
                 if (a2[x] < lowestR) {
@@ -137,67 +116,27 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
                 lowest = lowestR;
                 l = false;
             }
-            cout << "lowest value overall is " << lowest << endl;
+
 
             if (l == true) {
                 a1.erase(a1.begin() + lowestLIdx);
-                cout << "removed an element; a1 is now: " << endl;
-                for (i = 0; i < a1.size();  i++) {
-                    cout << a1[i] << endl;
-                }
             }
             else { // l is false
                 a2.erase(a2.begin() + lowestRIdx);
-                cout << "removed an element; a2 is now: " << endl;
-                for (i = 0; i < a2.size(); i++) {
-                    cout << a2[i] << endl;
-                }
             }
-            cout << "Add " << lowest << " to result" << endl;
-            result.push_back(lowest);
 
+            result.push_back(lowest);
 
         }
         
         if (a1.size() > 0) {
-            cout << "a1 is > 0" << endl;
             result.insert(result.end(), a1.begin(), a1.end());
         }
         if (a2.size() > 0) {
-            cout << "a2 is > 0" << endl;
             result.insert(result.end(), a2.begin(), a2.end());
         }
         return result;
-
-
-        // Determine whether left or right vector is larger.
-        // When size of each vector is 1, this sorts the two vectors into a single array of size 2.
-        // For future vector, this simply indicates whether the left or right vector contains smaller values.
-        /*
-        if (x_l2[0] < x_r2[0]) { // left vector is smaller
-            cout << "x_l2[0] is smaller than x_r2[0]: " << x_l2[0] << " < " << x_r2[0] << endl;
-            result.insert(result.end(), x_l2.begin(), x_l2.end());
-            result.insert(result.end(), x_r2.begin(), x_r2.end());
-            cout << "merged x_l2 and x_r2 into: " << endl;
-            for (int i = 0; i < result.size(); i++) {
-                cout << "  " << result[i] << endl;
-            }
-        }
-        else { // left vector is larger
-            cout << "x_l2[0] is larger than x_r2[0]: " << x_l2[0] << " > " << x_r2[0] << endl;
-            result.insert(result.end(), x_r2.begin(), x_r2.end());
-            result.insert(result.end(), x_l2.begin(), x_l2.end());
-            cout << "merged x_l2 and x_r2 into: " << endl;
-            for (int i = 0; i < result.size(); i++) {
-                cout << "  " << result[i] << endl;
-            }
-        }
-        */
-        // Problem identified: We can sort arrays just fine for a while.
-        // But if we have 3,4,9 and 5,8, it will identify 5>3 and append it to the end of the first array.
-        // What we need is an insert feature where it first finds which array has a lesser starting value,
-        //  then inserts the second array in the place right before it encounters a larger number in array 1.
-        
+      
     }
 
 };
@@ -229,7 +168,7 @@ int main()
         break;
     case 2: // check if SortList is correct 
         x.SortList();
-        TestList = x.GetList(); cout << "TESTING" << endl;
+        TestList = x.GetList(); 
         for (int i = 0; i < TestList.size(); i++) {
             cout << TestList.at(i) << endl;
         }
