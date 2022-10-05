@@ -81,6 +81,38 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
 
         // Create result vector
         vector<int> result;
+        vector<int> result2;
+
+        vector<int> a1;
+        vector<int> a2;
+        if (x_l2[0] < x_r2[0]) { // 3 < 5
+            a1 = x_l2;
+            a2 = x_r2;
+        }
+        else { // 5 > 3. Swap them so that our code is simpler.
+            a1 = x_r2;
+            a2 = x_l2;
+        }
+        
+        
+        cout << "a1 = " << endl;
+        for (int i = 0; i < a1.size(); i++) { cout << a1[i] << endl; }
+        cout << "a2 = " << endl;
+        for (int i = 0; i < a2.size(); i++) { cout << a2[i] << endl; }
+
+        for (int i = 0; i < a1.size(); i++) { // designed to iterate through smaller array
+            if (a1[i] < a2[0]) { // if element i of array 1 is smaller than first element of array 2
+                result.push_back(a1[i]); cout << a1[i] << " < " << a2[0] << endl;
+            }
+            else {
+                result2.push_back(a1[i]);
+            }
+        }
+        result.insert(result.end(), a2.begin(), a2.end());
+        result.insert(result.end(), result2.begin(), result2.end());
+        cout << "result:" << endl;
+        for (int i = 0; i < result.size(); i++) { cout << result[i] << endl; }
+        return result;
 
         // Determine whether left or right vector is larger.
         // When size of each vector is 1, this sorts the two vectors into a single array of size 2.
@@ -109,35 +141,7 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
         // But if we have 3,4,9 and 5,8, it will identify 5>3 and append it to the end of the first array.
         // What we need is an insert feature where it first finds which array has a lesser starting value,
         //  then inserts the second array in the place right before it encounters a larger number in array 1.
-        vector<int> a1;
-        vector<int> a2;
-        if (x_l2[0] < x_r2[0]) { // 3 < 5
-            a1 = x_l2;
-            a2 = x_r2;
-        }
-        else { // 5 > 3. Swap them so that our code is simpler.
-            a1 = x_r2;
-            a2 = x_l2;
-        }
-
-            // find max of array 2
-            int max = a2[0];
-            for (int i = 1; i < a2.size(); i++) {
-                if (a2[i] > max) {
-                    max = a2[i];
-                }
-            }
-
-            for (int i = 1; i < a1.size(); i++) { // This loop is designed to scan the 
-                if (a1[i] > max) { // Find the first value in array 1 greater than array 2's max value (9 > 8)
-                    a1.insert(a1.begin() + i, a2.begin(), a2.end());
-                    result = a1;
-                    return result;
-                }
-            }
-            // Worst case scenario, insert array 2 at the end of array 1
-            a1.insert(a1.end(), a2.begin(), a2.end());
-            return result;
+        
     }
 
 };
@@ -159,9 +163,6 @@ int main()
         InputList.push_back(temp);
     }
     x.SetList(InputList);
-    // LIST IS MESSING UP???
-    
-
     // start testing functions 
     switch (mode) {
     case 1: // check if input is correct 
