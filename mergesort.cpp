@@ -62,65 +62,110 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
         cout << "current size is " << x.size()  << endl;
         int midpoint = (x.size()) / 2;
         // split vectors
-        vector<int> x_l(x.begin(), x.begin() + midpoint); cout << "  hello. x_l size is " << x_l.size() << endl;
+        vector<int> xLeftInit(x.begin(), x.begin() + midpoint); cout << "  hello. x_l size is " << xLeftInit.size() << endl;
         cout << "    Current x_l: " << endl;
-        for (int x = 0; x < x_l.size(); x++) {
-            cout << x_l[x] << endl;
+        for (int x = 0; x < xLeftInit.size(); x++) {
+            cout << xLeftInit[x] << endl;
         }
-        vector<int> x_l2 = RecursiveSort(x_l); // Should eventually reach the point where x_l2 has size = 1, ending recursion
+        vector<int> xL = RecursiveSort(xLeftInit); // Should eventually reach the point where x_l2 has size = 1, ending recursion
 
 
 
 
-        vector<int> x_r(x.begin() + midpoint, x.end()); cout << "  hi. x_r size is " << x_r.size() << endl;
+        vector<int> xRightInit(x.begin() + midpoint, x.end()); cout << "  hi. x_r size is " << xRightInit.size() << endl;
         cout << "    Current x_r: " << endl;
-        for (int x = 0; x < x_r.size(); x++) {
-            cout << x_r[x] << endl;
+        for (int x = 0; x < xRightInit.size(); x++) {
+            cout << xRightInit[x] << endl;
         }
-        vector<int> x_r2 = RecursiveSort(x_r);
+        vector<int> xR = RecursiveSort(xRightInit);
 
         // Create result vector
         vector<int> result;
 
-        int i = 0;
-        while ((x_l2.size() > 0) && (x_r2.size() > 0)) {
+        int i;
+
+        vector<int> a1;
+        vector<int> a2;
+
+        // find vector with smaller size
+        if (xL.size() < xR.size()) {
+            a1 = xL;
+            a2 = xR;
+        }
+        else {
+            a1 = xR;
+            a2 = xL;
+        }
+
+        // Imagine 3,4,9 and 5,8
+        cout << "a1:" << endl;
+        for (i = 0; i < xL.size(); i++) {
+            cout << a1[i] << endl;
+        }
+        cout << "a2:" << endl;
+        for (i = 0; i < a2.size(); i++) {
+            cout << a2[i] << endl;
+        }
+        cout << "BEGIN WHILE LOOP" << endl;
+        while (a1.size() > 0 && a2.size() > 0)
+        {
             bool l = true;
-            int lowest = x_l2[0];
-
-            for (int x = 1; x < x_l2.size(); x++) {
-                if (x_l2[x] < lowest) {
-                    lowest = x_l2[x];
+            // find lowest value out of all vectors
+            int lowestL = a1[0]; cout << "starting lowest for a1 is " << a1[0] << endl;
+            int lowestLIdx = 0;
+            for (int x = 1; x < a1.size(); x++) {
+                if (a1[x] < lowestL) {
+                    lowestL = a1[x];
+                    lowestLIdx = x;
                 }
             }
 
-            for (int x = 1; x < x_r2.size(); x++) {
-                if (x_l2[x] < lowest) {
-                    lowest = x_r2[x];
-                    l = false;
+            int lowestR = a2[0]; cout << "starting lowest for a2 is " << a2[0] << endl;
+            int lowestRIdx = 0;
+            for (int x = 1; x < a2.size(); x++) {
+                if (a2[x] < lowestR) {
+                    lowestR = a2[x];
+                    lowestRIdx = x;
                 }
             }
+
+            int lowest;
+            if (lowestL < lowestR) {
+                lowest = lowestL;
+            }
+            else {
+                lowest = lowestR;
+                l = false;
+            }
+            cout << "lowest value overall is " << lowest << endl;
 
             if (l == true) {
-                x_l2.erase(x_l2.begin());
+                a1.erase(a1.begin() + lowestLIdx);
+                cout << "removed an element; a1 is now: " << endl;
+                for (i = 0; i < a1.size();  i++) {
+                    cout << a1[i] << endl;
+                }
             }
             else { // l is false
-                x_r2.erase(x_r2.begin());
+                a2.erase(a2.begin() + lowestRIdx);
+                cout << "removed an element; a2 is now: " << endl;
+                for (i = 0; i < a2.size(); i++) {
+                    cout << a2[i] << endl;
+                }
             }
-
+            cout << "Add " << lowest << " to result" << endl;
             result.push_back(lowest);
-            cout << "completed while loop" << endl;
-        } cout << "finished" << endl;
-        if (x_l2.size() > 0) {
-            cout << "xl2 is > 0" << endl;
-            result.insert(result.end(), x_l2.begin(), x_l2.end());
+
+
         }
-        if (x_r2.size() > 0) {
-            cout << "xr2 is > 0" << endl;
-            for ( i = 0; i < x_r2.size(); i++)
-            {
-                cout << x_r2[i] << endl;
-            }
-            result.insert(result.end(), x_r2.begin(), x_r2.end());
+        
+        if (a1.size() > 0) {
+            cout << "a1 is > 0" << endl;
+            result.insert(result.end(), a1.begin(), a1.end());
+        }
+        if (a2.size() > 0) {
+            cout << "a2 is > 0" << endl;
+            result.insert(result.end(), a2.begin(), a2.end());
         }
         return result;
 
