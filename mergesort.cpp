@@ -81,38 +81,49 @@ vector<int> MergeSort::RecursiveSort(vector<int> x) {
 
         // Create result vector
         vector<int> result;
-        vector<int> result2;
 
-        vector<int> a1;
-        vector<int> a2;
-        if (x_l2[0] < x_r2[0]) { // 3 < 5
-            a1 = x_l2;
-            a2 = x_r2;
-        }
-        else { // 5 > 3. Swap them so that our code is simpler.
-            a1 = x_r2;
-            a2 = x_l2;
-        }
-        
-        
-        cout << "a1 = " << endl;
-        for (int i = 0; i < a1.size(); i++) { cout << a1[i] << endl; }
-        cout << "a2 = " << endl;
-        for (int i = 0; i < a2.size(); i++) { cout << a2[i] << endl; }
+        int i = 0;
+        while ((x_l2.size() > 0) && (x_r2.size() > 0)) {
+            bool l = true;
+            int lowest = x_l2[0];
 
-        for (int i = 0; i < a1.size(); i++) { // designed to iterate through smaller array
-            if (a1[i] < a2[0]) { // if element i of array 1 is smaller than first element of array 2
-                result.push_back(a1[i]); cout << a1[i] << " < " << a2[0] << endl;
+            for (int x = 1; x < x_l2.size(); x++) {
+                if (x_l2[x] < lowest) {
+                    lowest = x_l2[x];
+                }
             }
-            else {
-                result2.push_back(a1[i]);
+
+            for (int x = 1; x < x_r2.size(); x++) {
+                if (x_l2[x] < lowest) {
+                    lowest = x_r2[x];
+                    l = false;
+                }
             }
+
+            if (l == true) {
+                x_l2.erase(x_l2.begin());
+            }
+            else { // l is false
+                x_r2.erase(x_r2.begin());
+            }
+
+            result.push_back(lowest);
+            cout << "completed while loop" << endl;
+        } cout << "finished" << endl;
+        if (x_l2.size() > 0) {
+            cout << "xl2 is > 0" << endl;
+            result.insert(result.end(), x_l2.begin(), x_l2.end());
         }
-        result.insert(result.end(), a2.begin(), a2.end());
-        result.insert(result.end(), result2.begin(), result2.end());
-        cout << "result:" << endl;
-        for (int i = 0; i < result.size(); i++) { cout << result[i] << endl; }
+        if (x_r2.size() > 0) {
+            cout << "xr2 is > 0" << endl;
+            for ( i = 0; i < x_r2.size(); i++)
+            {
+                cout << x_r2[i] << endl;
+            }
+            result.insert(result.end(), x_r2.begin(), x_r2.end());
+        }
         return result;
+
 
         // Determine whether left or right vector is larger.
         // When size of each vector is 1, this sorts the two vectors into a single array of size 2.
